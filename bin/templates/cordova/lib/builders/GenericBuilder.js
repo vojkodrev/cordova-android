@@ -101,7 +101,11 @@ function findOutputApksHelper(dir, build_type, arch) {
     var shellSilent = shell.config.silent;
     shell.config.silent = true;
 
-    var ret = shell.ls(path.join(dir, '*.apk'))
+    if (!shell.test("-d", dir))
+        return [];
+
+    var ret = shell.find(dir)
+    .filter(function(file) { return file.match(/\.apk$/); })
     .filter(function(candidate) {
         var apkName = path.basename(candidate);
         // Need to choose between release and debug .apk.

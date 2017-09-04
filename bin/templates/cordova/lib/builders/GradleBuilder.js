@@ -96,8 +96,8 @@ GradleBuilder.prototype.prepBuildFiles = function() {
     var depsList = '';
     subProjects.forEach(function(p) {
         var libName=p.replace(/[/\\]/g, ':').replace(name+'-','');
-        depsList += '    debugCompile project(path: "' + libName + '", configuration: "debug")\n';
-        depsList += '    releaseCompile project(path: "' + libName + '", configuration: "release")\n';
+        depsList += '    implementation project(path: "' + libName + '")\n';
+        // depsList += '    releaseCompile project(path: "' + libName + '", configuration: "release")\n';
     });
     // For why we do this mapping: https://issues.apache.org/jira/browse/CB-8390
     var SYSTEM_LIBRARY_MAPPINGS = [
@@ -162,7 +162,7 @@ GradleBuilder.prototype.prepEnv = function(opts) {
         // For some reason, using ^ and $ don't work.  This does the job, though.
         var distributionUrlRegex = /distributionUrl.*zip/;
         /*jshint -W069 */
-        var distributionUrl = process.env['CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL'] || 'http\\://services.gradle.org/distributions/gradle-2.2.1-all.zip';
+        var distributionUrl = process.env['CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL'] || 'http\\://services.gradle.org/distributions/gradle-4.1-all.zip';
         /*jshint +W069 */
         var gradleWrapperPropertiesPath = path.join(self.root, 'gradle', 'wrapper', 'gradle-wrapper.properties');
         shell.chmod('u+w', gradleWrapperPropertiesPath);

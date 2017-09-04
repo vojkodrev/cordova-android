@@ -20,10 +20,15 @@
 // GENERATED FILE! DO NOT EDIT!
 
 apply plugin: 'android'
+apply plugin: 'kotlin-android'
 
 buildscript {
+    ext.kotlin_version = '1.1.4-3'
+
     repositories {
         mavenCentral()
+        jcenter()
+        maven { url 'https://maven.google.com' }
     }
 
     // Switch the Android Gradle plugin version requirement depending on the
@@ -31,13 +36,15 @@ buildscript {
     // http://tools.android.com/tech-docs/new-build-system/version-compatibility
     // and https://issues.apache.org/jira/browse/CB-8143
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta4'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
    }
 
 // Allow plugins to declare Maven dependencies via build-extras.gradle.
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 task wrapper(type: Wrapper) {
@@ -148,6 +155,8 @@ task cdvPrintProps << {
 }
 
 android {
+    flavorDimensions "defaultFlav"
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -180,18 +189,24 @@ android {
     if (Boolean.valueOf(cdvBuildMultipleApks)) {
         productFlavors {
             armv7 {
+                dimension "defaultFlav"
+
                 versionCode defaultConfig.versionCode + 2
                 ndk {
                     abiFilters "armeabi-v7a", ""
                 }
             }
             x86 {
+                dimension "defaultFlav"
+
                 versionCode defaultConfig.versionCode + 4
                 ndk {
                     abiFilters "x86", ""
                 }
             }
             all {
+                dimension "defaultFlav"
+
                 ndk {
                     abiFilters "all", ""
                 }
@@ -210,8 +225,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     if (cdvReleaseSigningPropertiesFile) {
@@ -240,6 +255,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
     // SUB-PROJECT DEPENDENCIES START
     // SUB-PROJECT DEPENDENCIES END
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 def promptForReleaseKeyPassword() {
