@@ -177,14 +177,17 @@ android {
         if (cdvMinSdkVersion != null) {
             minSdkVersion cdvMinSdkVersion
         }
+
+        minSdkVersion 23
+        targetSdkVersion 26
     }
 
     lintOptions {
       abortOnError false;
     }
 
-    compileSdkVersion cdvCompileSdkVersion
-    buildToolsVersion cdvBuildToolsVersion
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
 
     if (Boolean.valueOf(cdvBuildMultipleApks)) {
         productFlavors {
