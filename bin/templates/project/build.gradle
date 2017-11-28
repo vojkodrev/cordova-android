@@ -18,8 +18,11 @@
 */
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 buildscript {
+    ext.kotlin_version = '1.1.60'
+    
     repositories {
         jcenter()
         maven {
@@ -32,7 +35,8 @@ buildscript {
     // http://tools.android.com/tech-docs/new-build-system/version-compatibility
     // and https://issues.apache.org/jira/browse/CB-8143
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"        
     }
 }
 
@@ -174,14 +178,17 @@ android {
         if (cdvMinSdkVersion != null) {
             minSdkVersion cdvMinSdkVersion
         }
+
+        minSdkVersion 21
+        targetSdkVersion 26        
     }
 
     lintOptions {
       abortOnError false;
     }
 
-    compileSdkVersion cdvCompileSdkVersion
-    buildToolsVersion cdvBuildToolsVersion
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
 
     if (Boolean.valueOf(cdvBuildMultipleApks)) {
         productFlavors {
@@ -222,8 +229,8 @@ android {
     */
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     if (cdvReleaseSigningPropertiesFile) {
@@ -252,6 +259,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     // SUB-PROJECT DEPENDENCIES START
     // SUB-PROJECT DEPENDENCIES END
+    
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"    
 }
 
 def promptForReleaseKeyPassword() {
